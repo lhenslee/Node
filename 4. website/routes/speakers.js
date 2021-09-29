@@ -3,8 +3,9 @@ const express = require("express");
 const router = express.Router();
 
 module.exports = () => {
-  router.get("/", (req, res) => {
-    res.send("Speakers!");
+
+  router.get("/", async (req, res) => {
+    res.json('Speakers!');
   });
 
   router.get("/:shortname", (req, res) => {
