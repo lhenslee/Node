@@ -28,6 +28,23 @@ app.set("views", path.join(__dirname, "./views"));
 
 app.use(express.static(path.join(__dirname, "static")));
 
+app.use(async (request, response, next) => {
+  try {
+    const names = await speakerService.getNames();
+    response.locals.speakerNames = names;
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+});
+
+app.locals.siteName = "ROUX Meetups";
+
+app.use((request, response, next) => {
+  response.locals.someVariable = "hello";
+  return next();
+});
+
 app.use("/", routes({ feedbackService, speakerService }));
 
 app.listen(port, () => {
