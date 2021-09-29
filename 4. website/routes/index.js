@@ -12,7 +12,7 @@ module.exports = params => {
     }
     req.session.visitcount += 1;
 
-    res.render("pages/index", { pageTitle: "Welcome" });
+    res.render("layout", { pageTitle: "Welcome", template: "index" });
   });
 
   router.use("/speakers", speakersRoute(params));
