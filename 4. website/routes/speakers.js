@@ -6,7 +6,7 @@ module.exports = params => {
   const { speakerService } = params;
 
   router.get("/", async (req, res) => {
-    const speakers = speakerService.getList();
+    const speakers = await speakerService.getList();
     res.json(speakers);
   });
 
