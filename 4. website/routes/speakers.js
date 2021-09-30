@@ -12,7 +12,13 @@ module.exports = params => {
 
   router.get("/:shortname", async (req, res) => {
     const speaker = await speakerService.getSpeaker(req.params.shortname);
-    res.render("layout", { pageTitle: req.params.shortname, template: "speaker", speaker });
+    const artwork = await speakerService.getArtworkForSpeaker(req.params.shortname);
+    res.render("layout", {
+      pageTitle: req.params.shortname,
+      template: "speaker",
+      speaker,
+      artwork,
+    });
   });
 
   return router;
