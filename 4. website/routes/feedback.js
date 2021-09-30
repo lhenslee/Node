@@ -14,8 +14,10 @@ module.exports = params => {
     }
   });
 
-  router.post("/", (req, res) => {
-    res.send(`Feedback form posted`);
+  router.post("/", async (req, res, next) => {
+    const feedback = await feedbackService.getList();
+    feedback.push(req.body);
+    res.render("layout", { pageTitle: "Feedback Submitted!", template: "feedback", feedback });
   });
 
   return router;
