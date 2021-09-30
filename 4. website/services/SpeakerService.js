@@ -71,6 +71,7 @@ class SpeakerService {
     const map = {
       title: speaker.title,
       name: speaker.name,
+      summary: speaker.summary,
       shortname: speaker.shortname,
       description: speaker.description,
     };
