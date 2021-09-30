@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const cookieSession = require("cookie-session");
+const createError = require("http-errors");
 
 const FeedbackService = require("./services/FeedbackService");
 const SpeakerService = require("./services/SpeakerService");
@@ -46,6 +47,23 @@ app.use((request, response, next) => {
 });
 
 app.use("/", routes({ feedbackService, speakerService }));
+
+app.use((req, res, next) => {
+  next(createError(404, "File not found"));
+});
+
+app.use((err, req, res, next) => {
+  try {
+    res.locals.message = err.message;
+    console.error(err);
+    const status = err.status || 500;
+    res.locals.status = status;
+    res.status(status);
+    res.render("error");
+  } catch {
+    next();
+  }
+});
 
 app.listen(port, () => {
   console.log(`Express server listening on http://127.0.0.1:${port}`);
