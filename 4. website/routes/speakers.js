@@ -20,15 +20,19 @@ module.exports = params => {
     }
   });
 
-  router.get("/:shortname", async (req, res) => {
-    const speaker = await speakerService.getSpeaker(req.params.shortname);
-    const artwork = await speakerService.getArtworkForSpeaker(req.params.shortname);
-    res.render("layout", {
-      pageTitle: req.params.shortname,
-      template: "speaker",
-      speaker,
-      artwork,
-    });
+  router.get("/:shortname", async (req, res, next) => {
+    try {
+      const speaker = await speakerService.getSpeaker(req.params.shortname);
+      const artwork = await speakerService.getArtworkForSpeaker(req.params.shortname);
+      return res.render("layout", {
+        pageTitle: req.params.shortname,
+        template: "speaker",
+        speaker,
+        artwork,
+      });
+    } catch (err) {
+      return next(err);
+    }
   });
 
   return router;
