@@ -58,8 +58,28 @@ module.exports = params => {
     }
   });
 
-  router.post("/api", (req, res, next) => {
-    res.send("Hello");
+  router.get("/api", async (req, res, next) => {
+    try {
+      const feedback = await feedbackService.getList();
+      return res.json(feedback);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  router.post("/api", validations, async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(errors);
+      }
+      const { name, email, title, message } = req.body;
+      await feedbackService.addEntry(name, email, title, message);
+      const feedback = await feedbackService.getList();
+      return res.json(feedback);
+    } catch (err) {
+      return next(err);
+    }
   });
 
   return router;
